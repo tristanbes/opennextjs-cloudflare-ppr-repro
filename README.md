@@ -4,6 +4,8 @@
 
 Issue: https://github.com/opennextjs/opennextjs-cloudflare/issues/1115
 
+**Live demo:** https://ppr-repro.tristan-bessoussa.workers.dev/
+
 ## Setup
 
 ```bash
@@ -51,6 +53,18 @@ On the first request (cache MISS), Next.js does full SSR and everything works. O
 - `next.config.ts`: `cacheComponents: true`
 - `open-next.config.ts`: R2 incremental cache (`r2IncrementalCache`)
 - `wrangler.jsonc`: R2 bucket binding `NEXT_INC_CACHE_R2_BUCKET`
+
+## Evidence
+
+**Request 1 (cache MISS)** — works correctly:
+- Headers: `x-nextjs-postponed: 1` (PPR active)
+- Response: Full HTML with streaming scripts, `$RC("B:0","S:0")` resolves the Suspense boundary
+- Dynamic content: Header with timestamp and theme rendered
+
+**Request 2+ (cache HIT)** — broken:
+- Headers: `x-nextjs-cache: HIT`, `x-nextjs-prerender: 1`, no `x-nextjs-postponed`
+- Response: Only the static shell HTML ending at `"Loading shell..."` — no streaming scripts, no `$RC` boundary resolution
+- Dynamic content: Never arrives, page stuck on fallback forever
 
 ## Workaround
 
