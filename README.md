@@ -45,7 +45,8 @@ On the first request (cache MISS), Next.js does full SSR and everything works. O
 
 - `next`: `^16.1.6`
 - `@opennextjs/cloudflare`: `^1.16.3`
-- `wrangler`: `^4.63.0`
+- `wrangler`: `^4.147.0` (the evidence below was recorded with wrangler `4.63.0` and has not been re-verified on
+  4.147; wrangler was bumped so this directory honours its wrangler auth profile)
 - `react`: `^19.2.4`
 
 ## Configuration
